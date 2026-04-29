@@ -13,13 +13,17 @@ describe("okJson", () => {
   test("writes a single-line ok envelope", () => {
     let captured = "";
     okJson({ a: 1, b: "two" }, (s) => { captured = s; });
-    expect(captured).toBe('{"ok":true,"data":{"a":1,"b":"two"}}\n');
+    expect(captured).toBe(
+      '{"ok":true,"schema_version":"1.0","data":{"a":1,"b":"two"}}\n',
+    );
   });
 
   test("preserves array payloads", () => {
     let captured = "";
     okJson([1, 2, 3], (s) => { captured = s; });
-    expect(captured).toBe('{"ok":true,"data":[1,2,3]}\n');
+    expect(captured).toBe(
+      '{"ok":true,"schema_version":"1.0","data":[1,2,3]}\n',
+    );
   });
 });
 
@@ -27,7 +31,9 @@ describe("errJson", () => {
   test("writes a single-line err envelope with code", () => {
     let captured = "";
     errJson("nope", "ENOENT", (s) => { captured = s; });
-    expect(captured).toBe('{"ok":false,"error":"nope","code":"ENOENT"}\n');
+    expect(captured).toBe(
+      '{"ok":false,"schema_version":"1.0","error":"nope","code":"ENOENT"}\n',
+    );
   });
 });
 
@@ -47,7 +53,9 @@ describe("fail", () => {
     // when args has --json. Here we route through errJson directly with a writer
     // to verify the JSON shape, and assert fail's return code separately.
     errJson("x", "EVALIDATION", (s) => { captured = s; });
-    expect(captured).toBe('{"ok":false,"error":"x","code":"EVALIDATION"}\n');
+    expect(captured).toBe(
+      '{"ok":false,"schema_version":"1.0","error":"x","code":"EVALIDATION"}\n',
+    );
     expect(fail(args({ json: true }), "x", "EVALIDATION")).toBe(1);
   });
 

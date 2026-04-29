@@ -8,8 +8,19 @@ export type ErrCode =
   | "EAMBIGUOUS"
   | "EUNKNOWN";
 
-export type OkEnvelope<T> = { ok: true; data: T };
-export type ErrEnvelope = { ok: false; error: string; code: ErrCode };
+export const SCHEMA_VERSION = "1.0";
+
+export type OkEnvelope<T> = {
+  ok: true;
+  schema_version: string;
+  data: T;
+};
+export type ErrEnvelope = {
+  ok: false;
+  schema_version: string;
+  error: string;
+  code: ErrCode;
+};
 
 type Writer = (s: string) => void;
 
@@ -20,7 +31,7 @@ export const isJson = (args: ParsedArgs): boolean =>
   args.flags["json"] === true;
 
 export const okJson = <T>(data: T, write: Writer = stdout): void => {
-  write(`${JSON.stringify({ ok: true, data })}\n`);
+  write(`${JSON.stringify({ ok: true, schema_version: SCHEMA_VERSION, data })}\n`);
 };
 
 export const errJson = (
@@ -28,7 +39,9 @@ export const errJson = (
   code: ErrCode,
   write: Writer = stderr,
 ): void => {
-  write(`${JSON.stringify({ ok: false, error: message, code })}\n`);
+  write(
+    `${JSON.stringify({ ok: false, schema_version: SCHEMA_VERSION, error: message, code })}\n`,
+  );
 };
 
 export const fail = (

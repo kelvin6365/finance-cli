@@ -18,6 +18,7 @@ import { runLoans } from "./loans.ts";
 import { runNextMonth } from "./next-month.ts";
 import { errJson, isJson } from "./output.ts";
 import { runRecurring } from "./recurring.ts";
+import { runSchema } from "./schema.ts";
 import { runShow } from "./show.ts";
 import { runStatus } from "./status.ts";
 
@@ -45,6 +46,7 @@ Usage:
                                    # optional: --rate %, --start YYYY-MM, --end YYYY-MM, --note
   finance loan edit <id> [--name] [--payment N] [--principal N] [--rate %] [--end YYYY-MM] [--note]
   finance loan pay <id>            # decrement principal by monthlyPayment + log transaction
+  finance schema                   # self-describe command surface (for LLMs / scripts)
   finance --help
 
 Add --json to any command for machine-readable output:
@@ -71,6 +73,7 @@ const BOOLEAN_FLAGS: Record<string, string[]> = {
   show: COMMON_BOOLEANS,
   edit: COMMON_BOOLEANS,
   delete: ["yes", ...COMMON_BOOLEANS],
+  schema: COMMON_BOOLEANS,
 };
 
 const dispatch = async (): Promise<number> => {
@@ -127,6 +130,8 @@ const dispatch = async (): Promise<number> => {
       return runCategories(parsed);
     case "show":
       return runShow(parsed);
+    case "schema":
+      return runSchema(parsed);
     case "loan": {
       const sub = parsed.positional[0];
       if (sub === "add") return runLoanAdd(parsed);
