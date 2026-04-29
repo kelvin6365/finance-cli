@@ -245,6 +245,26 @@ const COMMANDS: CommandSpec[] = [
     mutates: false,
   },
   {
+    name: "diff",
+    description:
+      "Activity report from <YYYY-MM-DD> to today: income, expense, net, top categories",
+    positional: [{ name: "date", type: "string", required: true }],
+    flags: [...COMMON_FLAGS],
+    mutates: false,
+  },
+  {
+    name: "export",
+    description:
+      "Emit a plain-text journal of all transactions. Default format is hledger; pipe or save with --output",
+    positional: [],
+    flags: [
+      ...COMMON_FLAGS,
+      { name: "format", type: "string", description: "hledger (default)" },
+      { name: "output", type: "string", description: "Write to PATH instead of stdout" },
+    ],
+    mutates: false,
+  },
+  {
     name: "schema",
     description: "Self-describe the command surface (this command)",
     positional: [],

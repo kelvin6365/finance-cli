@@ -7,7 +7,9 @@ import { parseArgv } from "./argv.ts";
 import { runBalance } from "./balance.ts";
 import { runCategories } from "./categories.ts";
 import { runDelete } from "./delete.ts";
+import { runDiff } from "./diff.ts";
 import { runEdit } from "./edit.ts";
+import { runExport } from "./export.ts";
 import { runIncomeEdit } from "./income-edit.ts";
 import { runIncome } from "./income.ts";
 import { runInit } from "./init.ts";
@@ -55,6 +57,9 @@ Usage:
   finance loan pay <id>            # decrement principal by monthlyPayment + log transaction
   finance simulate [--extra N --strategy avalanche|snowball]
                                    # debt-payoff simulator: months + interest saved vs baseline
+  finance diff <YYYY-MM-DD>        # activity report from date to today
+  finance export [--format hledger] [--output PATH]
+                                   # plain-text journal mirror
   finance schema                   # self-describe command surface (for LLMs / scripts)
   finance --help
 
@@ -93,6 +98,8 @@ const BOOLEAN_FLAGS: Record<string, string[]> = {
   afford: COMMON_BOOLEANS,
   runway: COMMON_BOOLEANS,
   simulate: COMMON_BOOLEANS,
+  diff: COMMON_BOOLEANS,
+  export: COMMON_BOOLEANS,
 };
 
 const dispatch = async (): Promise<number> => {
@@ -138,6 +145,10 @@ const dispatch = async (): Promise<number> => {
       return runRunway(parsed);
     case "simulate":
       return runSimulate(parsed);
+    case "diff":
+      return runDiff(parsed);
+    case "export":
+      return runExport(parsed);
     case "income": {
       const sub = parsed.positional[0];
       if (sub === "edit") return runIncomeEdit(parsed);
