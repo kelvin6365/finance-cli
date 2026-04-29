@@ -40,7 +40,7 @@ Two more pains shape the design (from their financial document):
 | Phase | Scope | Effort |
 |---|---|---|
 | ~~v0.2 — agent-friendly~~ | `finance schema --json` introspection · `--dry-run` on every mutation · `--idempotency-key` on add/edit/delete/loan add|pay (24h dedupe) · `schema_version` in every envelope | ✅ shipped |
-| **v0.3 — the wedge** | `finance afford <amount> [--by YYYY-MM-DD]` (can-I-cover-X JSON) · freelance runway view ("this gig extends your runway by N days / covers May rent + reserve") · 2A recurring auto-add at month start | S–M |
+| ~~v0.3 — the wedge~~ | `finance afford <amount> [--by YYYY-MM-DD]` (yes/tight/no) · `finance runway` (freelance vs target + cashflow projection + push/coast/behind verdict) · `finance recurring sync` (idempotent monthly auto-add) | ✅ shipped |
 | **v0.4 — debt mastery** | `finance simulate --extra N --strategy avalanche\|snowball` · interest-paid-to-date per loan + next-payment principal/interest split | M |
 | **v0.5 — interop** | hledger-compatible plain-text export · `finance diff <date>` snapshot diffing | S |
 | **v1.0** | docs polish, release binaries on tagged versions, signed releases | S |
