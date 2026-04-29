@@ -3,7 +3,7 @@ import { money } from "../core/format.ts";
 import { loadDb, saveDb } from "../core/storage.ts";
 import type { Debt, Transaction } from "../core/types.ts";
 import type { ParsedArgs } from "./argv.ts";
-import { fail, isJson, okJson } from "./output.ts";
+import { fail, isDryRun, isJson, okJson } from "./output.ts";
 
 const newTxId = (): string => `tx-${crypto.randomUUID()}`;
 
@@ -48,6 +48,12 @@ export const runLoanPay = async (args: ParsedArgs): Promise<number> => {
     note: `Payment: ${before.name}`,
     createdAt: new Date().toISOString(),
   };
+
+  if (isDryRun(args)) {
+    if (isJson(args)) okJson({ dry_run: true, would: { debt: after, transaction: tx, becameInactive } });
+    else process.stdout.write(`[dry-run] would pay ${money(payAmount)} on ${before.name}\n`);
+    return 0;
+  }
 
   db.debts[idx] = after;
   db.transactions.push(tx);

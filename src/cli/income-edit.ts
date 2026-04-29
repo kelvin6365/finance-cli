@@ -3,7 +3,7 @@ import { loadDb, saveDb } from "../core/storage.ts";
 import type { RecurringIncome } from "../core/types.ts";
 import type { ParsedArgs } from "./argv.ts";
 import { asPositiveInt } from "./loan.ts";
-import { fail, isJson, okJson } from "./output.ts";
+import { fail, isDryRun, isJson, okJson } from "./output.ts";
 
 const EDIT_FLAGS = ["name", "amount", "note"];
 
@@ -59,10 +59,16 @@ export const runIncomeEdit = async (args: ParsedArgs): Promise<number> => {
     after.note = typeof noteFlag === "string" ? noteFlag : "";
   }
 
+  const category = db.categories.find((c) => c.id === after.categoryId) ?? null;
+
+  if (isDryRun(args)) {
+    if (isJson(args)) okJson({ dry_run: true, would: { before, after, category } });
+    else process.stdout.write(`[dry-run] would update ${after.id}\n`);
+    return 0;
+  }
+
   db.recurringIncome[idx] = after;
   await saveDb(db);
-
-  const category = db.categories.find((c) => c.id === after.categoryId) ?? null;
 
   if (isJson(args)) {
     okJson({ before, after, category });

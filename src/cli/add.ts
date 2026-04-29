@@ -5,7 +5,7 @@ import { loadDb, saveDb } from "../core/storage.ts";
 import type { Category, Transaction, TransactionType } from "../core/types.ts";
 import type { ParsedArgs } from "./argv.ts";
 import { formatCategoryList, resolveCategory } from "./category-resolver.ts";
-import { fail, isJson, okJson } from "./output.ts";
+import { fail, isDryRun, isJson, okJson } from "./output.ts";
 
 const isYmd = (s: string): boolean => /^\d{4}-\d{2}-\d{2}$/.test(s);
 
@@ -80,6 +80,17 @@ const oneShot = async (args: ParsedArgs): Promise<number> => {
     note,
     createdAt: new Date().toISOString(),
   };
+
+  if (isDryRun(args)) {
+    if (isJson(args)) {
+      okJson({ dry_run: true, would: { transaction: tx, category: resolved.category } });
+    } else {
+      process.stdout.write(
+        `[dry-run] would add: ${money(tx.type === "income" ? tx.amount : -tx.amount, { signed: true })} · ${resolved.category.name}${tx.note ? ` · ${tx.note}` : ""} · ${tx.date}\n`,
+      );
+    }
+    return 0;
+  }
 
   db.transactions.push(tx);
   await saveDb(db);

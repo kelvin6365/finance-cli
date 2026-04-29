@@ -20,6 +20,14 @@ const COMMON_FLAGS: FlagSpec[] = [
   { name: "help", type: "boolean", description: "Print help and exit" },
 ];
 
+const DRY_RUN: FlagSpec = {
+  name: "dry-run",
+  type: "boolean",
+  description: "Compute and return the would-be result without writing",
+};
+
+const MUTATION_FLAGS: FlagSpec[] = [...COMMON_FLAGS, DRY_RUN];
+
 const COMMANDS: CommandSpec[] = [
   {
     name: "status",
@@ -33,7 +41,7 @@ const COMMANDS: CommandSpec[] = [
     description: "Create ~/.finance/data.json from the bundled seed",
     positional: [],
     flags: [
-      ...COMMON_FLAGS,
+      ...MUTATION_FLAGS,
       { name: "currency", type: "string", description: "ISO currency code (e.g. USD, HKD)" },
       { name: "symbol", type: "string", description: "Display symbol (e.g. $, HK$, ¥)" },
     ],
@@ -48,7 +56,7 @@ const COMMANDS: CommandSpec[] = [
       { name: "note", type: "string", required: false },
     ],
     flags: [
-      ...COMMON_FLAGS,
+      ...MUTATION_FLAGS,
       { name: "income", type: "boolean", description: "Mark as income (default expense)" },
       { name: "expense", type: "boolean", description: "Mark as expense" },
       { name: "date", type: "string", description: "ISO YYYY-MM-DD; defaults to today" },
@@ -60,7 +68,7 @@ const COMMANDS: CommandSpec[] = [
     description: "Modify an existing transaction by id",
     positional: [{ name: "id", type: "string", required: true }],
     flags: [
-      ...COMMON_FLAGS,
+      ...MUTATION_FLAGS,
       { name: "amount", type: "number", description: "New amount" },
       { name: "category", type: "string", description: "New category id or name" },
       { name: "note", type: "string", description: "New note" },
@@ -73,7 +81,7 @@ const COMMANDS: CommandSpec[] = [
     description: "Remove a transaction by id; returns prior state",
     positional: [{ name: "id", type: "string", required: true }],
     flags: [
-      ...COMMON_FLAGS,
+      ...MUTATION_FLAGS,
       { name: "yes", type: "boolean", description: "Skip confirmation prompt" },
     ],
     mutates: true,
@@ -134,7 +142,7 @@ const COMMANDS: CommandSpec[] = [
     description: "Add a new loan (interactive without flags)",
     positional: [],
     flags: [
-      ...COMMON_FLAGS,
+      ...MUTATION_FLAGS,
       { name: "name", type: "string", description: "Loan label" },
       { name: "amount", type: "number", description: "Original principal" },
       { name: "instalments", type: "number", description: "Total instalment count" },
@@ -152,7 +160,7 @@ const COMMANDS: CommandSpec[] = [
     description: "Modify an existing loan by id",
     positional: [{ name: "id", type: "string", required: true }],
     flags: [
-      ...COMMON_FLAGS,
+      ...MUTATION_FLAGS,
       { name: "name", type: "string", description: "New label" },
       { name: "payment", type: "number", description: "New monthly payment" },
       { name: "principal", type: "number", description: "New remaining principal" },
@@ -166,7 +174,7 @@ const COMMANDS: CommandSpec[] = [
     name: "loan pay",
     description: "Record an instalment: decrement principal + log expense transaction",
     positional: [{ name: "id", type: "string", required: true }],
-    flags: [...COMMON_FLAGS],
+    flags: [...MUTATION_FLAGS],
     mutates: true,
   },
   {

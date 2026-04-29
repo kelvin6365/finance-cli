@@ -2,7 +2,7 @@ import { loadDb, saveDb } from "../core/storage.ts";
 import type { Debt } from "../core/types.ts";
 import type { ParsedArgs } from "./argv.ts";
 import { asNonNegFloat, asNonNegInt, asPositiveInt, isYm } from "./loan.ts";
-import { fail, isJson, okJson } from "./output.ts";
+import { fail, isDryRun, isJson, okJson } from "./output.ts";
 
 const EDIT_FLAGS = ["name", "payment", "principal", "rate", "end", "note"];
 
@@ -85,6 +85,12 @@ export const runLoanEdit = async (args: ParsedArgs): Promise<number> => {
   const noteFlag = args.flags["note"];
   if (noteFlag !== undefined) {
     after.note = typeof noteFlag === "string" ? noteFlag : "";
+  }
+
+  if (isDryRun(args)) {
+    if (isJson(args)) okJson({ dry_run: true, would: { before, after } });
+    else process.stdout.write(`[dry-run] would update ${after.id}\n`);
+    return 0;
   }
 
   db.debts[idx] = after;

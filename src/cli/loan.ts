@@ -3,7 +3,7 @@ import { error } from "../core/log.ts";
 import { loadDb, saveDb } from "../core/storage.ts";
 import type { Debt } from "../core/types.ts";
 import type { FlagValue, ParsedArgs } from "./argv.ts";
-import { fail, isJson, okJson } from "./output.ts";
+import { fail, isDryRun, isJson, okJson } from "./output.ts";
 
 // --- shared helpers (also used by loan-edit, loan-pay) ----------------------
 
@@ -224,6 +224,13 @@ const runLoanAddFlags = async (args: ParsedArgs): Promise<number> => {
   };
 
   const db = await loadDb();
+
+  if (isDryRun(args)) {
+    if (isJson(args)) okJson({ dry_run: true, would: { debt } });
+    else process.stdout.write(`[dry-run] would add loan: ${debt.name}\n`);
+    return 0;
+  }
+
   db.debts.push(debt);
   await saveDb(db);
 

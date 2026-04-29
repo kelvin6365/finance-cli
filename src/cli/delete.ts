@@ -2,7 +2,7 @@ import { money } from "../core/format.ts";
 import { error } from "../core/log.ts";
 import { loadDb, saveDb } from "../core/storage.ts";
 import type { ParsedArgs } from "./argv.ts";
-import { fail, isJson, okJson } from "./output.ts";
+import { fail, isDryRun, isJson, okJson } from "./output.ts";
 
 const isTxId = (id: string): boolean =>
   id.startsWith("tx-") || id.startsWith("txn-");
@@ -50,6 +50,12 @@ export const runDelete = async (args: ParsedArgs): Promise<number> => {
       process.stdout.write("Cancelled.\n");
       return 0;
     }
+  }
+
+  if (isDryRun(args)) {
+    if (isJson(args)) okJson({ dry_run: true, would: { deleted: tx, category } });
+    else process.stdout.write(`[dry-run] would delete ${tx.id}\n`);
+    return 0;
   }
 
   db.transactions.splice(idx, 1);

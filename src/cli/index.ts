@@ -50,29 +50,33 @@ Usage:
   finance --help
 
 Add --json to any command for machine-readable output:
-  {"ok":true,"data":...}        on success
-  {"ok":false,"error":...,"code":...}  on stderr (non-zero exit)
+  {"ok":true,"schema_version":"1.0","data":...}        on success
+  {"ok":false,"schema_version":"1.0","error":...,"code":...}  on stderr (non-zero exit)
+
+Add --dry-run to any mutation (init, add, edit, delete, loan add|edit|pay,
+income edit) to preview the result without writing.
 `;
 
 const STORAGE_HINT = "Hint: run `finance init` first";
 
 const COMMON_BOOLEANS = ["help", "json"];
+const MUTATION_BOOLEANS = ["dry-run", ...COMMON_BOOLEANS];
 
 const BOOLEAN_FLAGS: Record<string, string[]> = {
-  add: ["income", "expense", ...COMMON_BOOLEANS],
+  add: ["income", "expense", ...MUTATION_BOOLEANS],
   balance: ["raw", ...COMMON_BOOLEANS],
   list: COMMON_BOOLEANS,
   status: COMMON_BOOLEANS,
-  income: COMMON_BOOLEANS,
-  init: COMMON_BOOLEANS,
+  income: MUTATION_BOOLEANS,
+  init: MUTATION_BOOLEANS,
   "next-month": COMMON_BOOLEANS,
-  loan: COMMON_BOOLEANS,
+  loan: MUTATION_BOOLEANS,
   loans: COMMON_BOOLEANS,
   recurring: COMMON_BOOLEANS,
   categories: COMMON_BOOLEANS,
   show: COMMON_BOOLEANS,
-  edit: COMMON_BOOLEANS,
-  delete: ["yes", ...COMMON_BOOLEANS],
+  edit: MUTATION_BOOLEANS,
+  delete: ["yes", ...MUTATION_BOOLEANS],
   schema: COMMON_BOOLEANS,
 };
 

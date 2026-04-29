@@ -30,6 +30,9 @@ const stderr: Writer = (s) => process.stderr.write(s);
 export const isJson = (args: ParsedArgs): boolean =>
   args.flags["json"] === true;
 
+export const isDryRun = (args: ParsedArgs): boolean =>
+  args.flags["dry-run"] === true;
+
 export const okJson = <T>(data: T, write: Writer = stdout): void => {
   write(`${JSON.stringify({ ok: true, schema_version: SCHEMA_VERSION, data })}\n`);
 };

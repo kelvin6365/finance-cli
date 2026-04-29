@@ -4,7 +4,7 @@ import { loadDb, saveDb } from "../core/storage.ts";
 import type { Transaction } from "../core/types.ts";
 import type { ParsedArgs } from "./argv.ts";
 import { resolveCategory } from "./category-resolver.ts";
-import { fail, isJson, okJson } from "./output.ts";
+import { fail, isDryRun, isJson, okJson } from "./output.ts";
 
 const isYmd = (s: string): boolean => /^\d{4}-\d{2}-\d{2}$/.test(s);
 
@@ -99,10 +99,16 @@ export const runEdit = async (args: ParsedArgs): Promise<number> => {
     after.date = v;
   }
 
+  const category = db.categories.find((c) => c.id === after.categoryId) ?? null;
+
+  if (isDryRun(args)) {
+    if (isJson(args)) okJson({ dry_run: true, would: { before, after, category } });
+    else process.stdout.write(`[dry-run] would update ${id}\n`);
+    return 0;
+  }
+
   db.transactions[idx] = after;
   await saveDb(db);
-
-  const category = db.categories.find((c) => c.id === after.categoryId) ?? null;
 
   if (isJson(args)) {
     okJson({ before, after, category });
