@@ -4,6 +4,7 @@ import { loadDb, saveDb } from "../core/storage.ts";
 import type { Transaction } from "../core/types.ts";
 import type { ParsedArgs } from "./argv.ts";
 import { resolveCategory } from "./category-resolver.ts";
+import { idemKey, idemLookup, idemSave } from "./idempotency.ts";
 import { fail, isDryRun, isJson, okJson } from "./output.ts";
 
 const isYmd = (s: string): boolean => /^\d{4}-\d{2}-\d{2}$/.test(s);
@@ -107,11 +108,24 @@ export const runEdit = async (args: ParsedArgs): Promise<number> => {
     return 0;
   }
 
+  const key = idemKey(args);
+  if (key) {
+    const cached = await idemLookup(key);
+    if (cached !== null) {
+      if (isJson(args)) okJson({ idempotent_replay: true, ...(cached as object) });
+      else process.stdout.write(`[idempotent] already applied for key '${key}'\n`);
+      return 0;
+    }
+  }
+
   db.transactions[idx] = after;
   await saveDb(db);
 
+  const payload = { before, after, category };
+  if (key) await idemSave(key, payload);
+
   if (isJson(args)) {
-    okJson({ before, after, category });
+    okJson(payload);
     return 0;
   }
 

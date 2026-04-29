@@ -3,6 +3,7 @@ import { error } from "../core/log.ts";
 import { loadDb, saveDb } from "../core/storage.ts";
 import type { Debt } from "../core/types.ts";
 import type { FlagValue, ParsedArgs } from "./argv.ts";
+import { idemKey, idemLookup, idemSave } from "./idempotency.ts";
 import { fail, isDryRun, isJson, okJson } from "./output.ts";
 
 // --- shared helpers (also used by loan-edit, loan-pay) ----------------------
@@ -231,11 +232,24 @@ const runLoanAddFlags = async (args: ParsedArgs): Promise<number> => {
     return 0;
   }
 
+  const key = idemKey(args);
+  if (key) {
+    const cached = await idemLookup(key);
+    if (cached !== null) {
+      if (isJson(args)) okJson({ idempotent_replay: true, ...(cached as object) });
+      else process.stdout.write(`[idempotent] already applied for key '${key}'\n`);
+      return 0;
+    }
+  }
+
   db.debts.push(debt);
   await saveDb(db);
 
+  const payload = { debt };
+  if (key) await idemSave(key, payload);
+
   if (isJson(args)) {
-    okJson({ debt });
+    okJson(payload);
     return 0;
   }
   process.stdout.write(

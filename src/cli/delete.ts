@@ -2,6 +2,7 @@ import { money } from "../core/format.ts";
 import { error } from "../core/log.ts";
 import { loadDb, saveDb } from "../core/storage.ts";
 import type { ParsedArgs } from "./argv.ts";
+import { idemKey, idemLookup, idemSave } from "./idempotency.ts";
 import { fail, isDryRun, isJson, okJson } from "./output.ts";
 
 const isTxId = (id: string): boolean =>
@@ -58,11 +59,24 @@ export const runDelete = async (args: ParsedArgs): Promise<number> => {
     return 0;
   }
 
+  const key = idemKey(args);
+  if (key) {
+    const cached = await idemLookup(key);
+    if (cached !== null) {
+      if (isJson(args)) okJson({ idempotent_replay: true, ...(cached as object) });
+      else process.stdout.write(`[idempotent] already applied for key '${key}'\n`);
+      return 0;
+    }
+  }
+
   db.transactions.splice(idx, 1);
   await saveDb(db);
 
+  const payload = { deleted: tx, category };
+  if (key) await idemSave(key, payload);
+
   if (isJson(args)) {
-    okJson({ deleted: tx, category });
+    okJson(payload);
     return 0;
   }
 

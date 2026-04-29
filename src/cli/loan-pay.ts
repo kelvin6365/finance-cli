@@ -3,6 +3,7 @@ import { money } from "../core/format.ts";
 import { loadDb, saveDb } from "../core/storage.ts";
 import type { Debt, Transaction } from "../core/types.ts";
 import type { ParsedArgs } from "./argv.ts";
+import { idemKey, idemLookup, idemSave } from "./idempotency.ts";
 import { fail, isDryRun, isJson, okJson } from "./output.ts";
 
 const newTxId = (): string => `tx-${crypto.randomUUID()}`;
@@ -55,12 +56,25 @@ export const runLoanPay = async (args: ParsedArgs): Promise<number> => {
     return 0;
   }
 
+  const key = idemKey(args);
+  if (key) {
+    const cached = await idemLookup(key);
+    if (cached !== null) {
+      if (isJson(args)) okJson({ idempotent_replay: true, ...(cached as object) });
+      else process.stdout.write(`[idempotent] already applied for key '${key}'\n`);
+      return 0;
+    }
+  }
+
   db.debts[idx] = after;
   db.transactions.push(tx);
   await saveDb(db);
 
+  const payload = { debt: after, transaction: tx, becameInactive };
+  if (key) await idemSave(key, payload);
+
   if (isJson(args)) {
-    okJson({ debt: after, transaction: tx, becameInactive });
+    okJson(payload);
     return 0;
   }
   const tail = becameInactive ? " (paid off!)" : "";

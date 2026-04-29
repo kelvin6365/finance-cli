@@ -26,7 +26,14 @@ const DRY_RUN: FlagSpec = {
   description: "Compute and return the would-be result without writing",
 };
 
-const MUTATION_FLAGS: FlagSpec[] = [...COMMON_FLAGS, DRY_RUN];
+const IDEMPOTENCY_KEY: FlagSpec = {
+  name: "idempotency-key",
+  type: "string",
+  description:
+    "Caller-supplied key; if seen within 24h, the original result is replayed instead of re-executing",
+};
+
+const MUTATION_FLAGS: FlagSpec[] = [...COMMON_FLAGS, DRY_RUN, IDEMPOTENCY_KEY];
 
 const COMMANDS: CommandSpec[] = [
   {

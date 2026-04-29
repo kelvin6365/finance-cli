@@ -55,6 +55,9 @@ Add --json to any command for machine-readable output:
 
 Add --dry-run to any mutation (init, add, edit, delete, loan add|edit|pay,
 income edit) to preview the result without writing.
+
+Add --idempotency-key <KEY> to add/edit/delete/loan add|pay so retries
+within 24h replay the original result instead of double-applying.
 `;
 
 const STORAGE_HINT = "Hint: run `finance init` first";
