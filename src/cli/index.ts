@@ -2,6 +2,7 @@
 import { error } from "../core/log.ts";
 import { loadDb } from "../core/storage.ts";
 import { runAdd } from "./add.ts";
+import { runAfford } from "./afford.ts";
 import { parseArgv } from "./argv.ts";
 import { runBalance } from "./balance.ts";
 import { runCategories } from "./categories.ts";
@@ -32,6 +33,7 @@ Usage:
   finance edit <id> [--amount N] [--category <name>] [--note <text>] [--date YYYY-MM-DD]
   finance delete <id> [--yes]      # remove a transaction (returns prior state in --json)
   finance balance [--raw]
+  finance afford <amount> [--by YYYY-MM-DD]   # can I cover X by date Y? yes/tight/no
   finance income                   # current month income vs target
   finance income edit <id> [--name] [--amount N] [--note]
   finance list [--month [YYYY-MM]] [-n N] [--type income|expense] [--category <name>]
@@ -81,6 +83,7 @@ const BOOLEAN_FLAGS: Record<string, string[]> = {
   edit: MUTATION_BOOLEANS,
   delete: ["yes", ...MUTATION_BOOLEANS],
   schema: COMMON_BOOLEANS,
+  afford: COMMON_BOOLEANS,
 };
 
 const dispatch = async (): Promise<number> => {
@@ -120,6 +123,8 @@ const dispatch = async (): Promise<number> => {
       return runDelete(parsed);
     case "balance":
       return runBalance(parsed);
+    case "afford":
+      return runAfford(parsed);
     case "income": {
       const sub = parsed.positional[0];
       if (sub === "edit") return runIncomeEdit(parsed);

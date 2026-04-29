@@ -114,6 +114,17 @@ const COMMANDS: CommandSpec[] = [
     mutates: false,
   },
   {
+    name: "afford",
+    description:
+      "Can I cover <amount> by --by date? Returns yes/tight/no with cashflow projection",
+    positional: [{ name: "amount", type: "number", required: true }],
+    flags: [
+      ...COMMON_FLAGS,
+      { name: "by", type: "string", description: "ISO YYYY-MM-DD; defaults to end of current month" },
+    ],
+    mutates: false,
+  },
+  {
     name: "balance",
     description: "Current month balance, one line",
     positional: [],
