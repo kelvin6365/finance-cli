@@ -26,28 +26,46 @@ Three habits it supports in seconds:
 
 ## Install
 
-### From a release
-
-Download the binary for your platform from the
-[Releases page](../../releases), make it executable, drop it on your
-`PATH`:
+### One-line install (macOS / Linux)
 
 ```bash
-# macOS (Apple Silicon)
-curl -L -o finance https://github.com/USER/REPO/releases/latest/download/finance-macos-arm64
-chmod +x finance
-mv finance /usr/local/bin/
+curl -fsSL https://raw.githubusercontent.com/kelvin6365/finance-cli/main/install.sh | bash
 ```
 
-The binary has no runtime dependencies. No Bun, no Node, no Python.
+Detects your platform, downloads the latest release binary, and installs
+to `/usr/local/bin/finance`. Override the location with
+`INSTALL_DIR=$HOME/.local/bin`. No runtime dependencies — no Bun, no
+Node, no Python.
+
+### Bun users
+
+If you have [Bun](https://bun.sh) ≥ 1.2 already:
+
+```bash
+bun add -g github:kelvin6365/finance-cli
+```
+
+This installs from source — runs your local Bun, no compile step.
+
+### Manual download
+
+Grab the binary for your platform from the
+[Releases page](https://github.com/kelvin6365/finance-cli/releases/latest):
+
+| Platform | Asset |
+|---|---|
+| macOS (Apple Silicon) | `finance-macos-arm64` |
+| macOS (Intel)         | `finance-macos-x64`   |
+| Linux x86_64          | `finance-linux-x64`   |
+| Windows x86_64        | `finance-windows-x64.exe` |
+
+Make it executable (`chmod +x finance-*`) and drop it on your `PATH`.
 
 ### From source
 
-Requires [Bun](https://bun.sh) ≥ 1.2.
-
 ```bash
-git clone https://github.com/USER/REPO finance
-cd finance
+git clone https://github.com/kelvin6365/finance-cli
+cd finance-cli
 bun install
 bun run build:macos-arm   # or build:macos-x64 / build:linux / build:windows
 ```

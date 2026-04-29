@@ -1,8 +1,15 @@
 {
-  "name": "finance-tracker",
+  "name": "finance-cli",
   "version": "1.0.0",
+  "description": "Terminal finance tracker for people getting out of debt — local, offline, single binary, AI-agent friendly",
   "type": "module",
-  "private": true,
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kelvin6365/finance-cli.git"
+  },
+  "homepage": "https://github.com/kelvin6365/finance-cli",
+  "bugs": "https://github.com/kelvin6365/finance-cli/issues",
   "bin": {
     "finance": "./src/cli/index.ts"
   },
