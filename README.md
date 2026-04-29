@@ -82,21 +82,55 @@ FINANCE_TUI_NO_BANNER=1 finance    # skip launch banner
 
 ## Common commands
 
+### Daily
+
 ```bash
+finance add 80 food "lunch"          # log a transaction
 finance status                       # monthly snapshot
 finance balance                      # one-line balance
-finance income                       # income vs target
-finance next-month                   # next-month income vs payments preview
-finance loans                        # active debts, sorted by principal
-finance recurring                    # recurring income/expense/periodic
-finance categories                   # list categories
-finance add 80 food "lunch"          # log a transaction
+finance list --month --type expense  # filtered transactions
 finance edit <id> --amount 90        # fix a typo
 finance delete <id>                  # remove (prompts unless --yes)
+```
+
+### Cashflow & projection
+
+```bash
+finance afford 5000                  # can I cover 5000 by end of month?
+finance afford 50000 --by 2026-06-30 # by a specific date
+finance runway                       # freelance vs target + push/coast/behind verdict
+finance next-month                   # next-month income vs payments preview
+```
+
+### Loans & debt
+
+```bash
+finance loans                        # active debts + per-loan amortization (next split, remaining interest)
 finance loan add --name "HSBC" --amount 50000 --instalments 24 --paid 3 --payment 2200
 finance loan pay <id>                # record an instalment (decrements principal + logs txn)
+finance simulate --extra 5000 --strategy avalanche
+                                     # debt-payoff simulator: months + interest saved vs baseline
+```
+
+### Recurring & history
+
+```bash
+finance recurring                    # recurring income/expense/periodic
+finance recurring sync               # auto-create transactions from recurring schedules (idempotent)
+finance income                       # income vs target
+finance diff 2026-04-01              # activity report from date to today
 finance show <id>                    # universal lookup by id
-finance list --month --type expense  # filtered transactions
+finance categories                   # list categories
+```
+
+### AI-agent / interop
+
+```bash
+finance schema --json                # self-describe the command surface
+finance export --format hledger      # plain-text journal mirror
+finance export --output journal.txt
+finance add 80 food --json --idempotency-key K  # safe to retry
+finance loan pay <id> --dry-run --json          # preview without writing
 ```
 
 Exit codes: `0` success · `1` validation/lookup error · `2` system error.

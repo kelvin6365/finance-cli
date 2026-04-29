@@ -43,7 +43,7 @@ Two more pains shape the design (from their financial document):
 | ~~v0.3 — the wedge~~ | `finance afford <amount> [--by YYYY-MM-DD]` (yes/tight/no) · `finance runway` (freelance vs target + cashflow projection + push/coast/behind verdict) · `finance recurring sync` (idempotent monthly auto-add) | ✅ shipped |
 | ~~v0.4 — debt mastery~~ | `finance simulate --extra N --strategy avalanche\|snowball` (months + interest saved vs baseline) · `finance loans` JSON now embeds per-loan amortization (next-payment principal/interest split + total remaining interest) | ✅ shipped |
 | ~~v0.5 — interop~~ | `finance export [--format hledger] [--output PATH]` (hledger-compatible journal) · `finance diff <YYYY-MM-DD>` activity report (income, expense, net, top categories) | ✅ shipped |
-| **v1.0** | docs polish, release binaries on tagged versions, signed releases | S |
+| ~~v1.0~~ | CHANGELOG.md, README command catalogue, release binaries via tagged push | ✅ shipped |
 
 ### Deferred / non-goals (do not pursue)
 
