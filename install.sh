@@ -45,18 +45,21 @@ detect_target() {
   esac
 }
 
+TMP_DIR=""
+cleanup() { [ -n "${TMP_DIR:-}" ] && rm -rf "$TMP_DIR"; }
+trap cleanup EXIT
+
 main() {
   command -v curl >/dev/null 2>&1 || die "curl is required."
 
-  local asset url tmp install_path sudo=""
+  local asset url install_path sudo=""
   asset="$(detect_target)"
   url="https://github.com/${REPO}/releases/latest/download/${asset}"
-  tmp="$(mktemp -d)"
-  trap 'rm -rf "$tmp"' EXIT
+  TMP_DIR="$(mktemp -d)"
 
   dim "Downloading ${asset} from ${url}"
-  curl -fL --progress-bar -o "$tmp/${BIN_NAME}" "$url"
-  chmod +x "$tmp/${BIN_NAME}"
+  curl -fL --progress-bar -o "$TMP_DIR/${BIN_NAME}" "$url"
+  chmod +x "$TMP_DIR/${BIN_NAME}"
 
   install_path="${INSTALL_DIR}/${BIN_NAME}"
   if [ ! -d "$INSTALL_DIR" ]; then
@@ -64,11 +67,11 @@ main() {
     [ -n "$sudo" ] && $sudo mkdir -p "$INSTALL_DIR"
   fi
   if [ -w "$INSTALL_DIR" ]; then
-    mv "$tmp/${BIN_NAME}" "$install_path"
+    mv "$TMP_DIR/${BIN_NAME}" "$install_path"
   else
     sudo="sudo"
     dim "Installing to ${install_path} (requires sudo)"
-    $sudo mv "$tmp/${BIN_NAME}" "$install_path"
+    $sudo mv "$TMP_DIR/${BIN_NAME}" "$install_path"
   fi
 
   green "✓ Installed: $install_path"
