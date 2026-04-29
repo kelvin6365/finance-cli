@@ -19,21 +19,40 @@ Two more pains shape the design (from their financial document):
 
 ---
 
-## 2. Phases
+## 2. Roadmap
 
-| Phase | Scope | Status |
+### Shipped — v0.1 (initial public release)
+
+| Milestone | Scope | Status |
 |---|---|---|
-| **B1** | Project scaffold (Bun, TS, dirs, configs) | not started |
-| **B2** | Core layer (types, storage, calc, format, log) | not started |
-| **B3** | One-shot CLI commands (`init`, `add`, `balance`, `status`, `list`) | not started |
-| **B4** | Tests for B2 + B3 | not started |
-| **B5** | README + first build (`bun build --compile`) | not started |
-| 2A | Recurring auto-add (month-start pending transactions) | future |
-| 2B | Full-screen Ink TUI (dashboard, add, recent) | future |
-| 2C | May 2026 countdown card · savings tracker · freelance tracker · debt timeline | future |
-| 3 | Web UI reusing `src/core` | future |
+| B1 | Project scaffold (Bun, TS, dirs, configs) | ✅ done |
+| B2 | Core layer (types, storage, calc, format, log) | ✅ done |
+| B3 | One-shot CLI commands (init, status, add, edit, delete, balance, income, list, loan/loans, recurring, categories, show, next-month) | ✅ done |
+| B4 | Tests for core + CLI envelope (114 tests across 7 files) | ✅ done |
+| B5 | README + cross-platform `bun build --compile` | ✅ done |
+| 2B | Full-screen Ink TUI — 5 tabs (Dashboard / Add / Recent / Debts / Next Month), Hermes-style gold-on-dark theme, hero banner, light/dark detect | ✅ done |
+| 2C-1 | May 2026 insurance countdown card with progress + Funded/Behind badge | ✅ done |
+| 2C-2 | Per-loan payoff date + days-remaining (stored or amortised) | ✅ done |
+| OSS | MIT license, CONTRIBUTING.md, CI workflow, single configurable currency | ✅ done |
 
-Phase B = MVP. Everything in B must be shippable before any 2x work starts.
+### Planned
+
+| Phase | Scope | Effort |
+|---|---|---|
+| **v0.2 — agent-friendly** | `finance schema --json` introspection · `--dry-run` on every mutation · `--idempotency-key` on `add`/`edit`/`loan-pay` (24h dedupe) · `schema_version` in every envelope | S |
+| **v0.3 — the wedge** | `finance afford <amount> [--by YYYY-MM-DD]` (can-I-cover-X JSON) · freelance runway view ("this gig extends your runway by N days / covers May rent + reserve") · 2A recurring auto-add at month start | S–M |
+| **v0.4 — debt mastery** | `finance simulate --extra N --strategy avalanche\|snowball` · interest-paid-to-date per loan + next-payment principal/interest split | M |
+| **v0.5 — interop** | hledger-compatible plain-text export · `finance diff <date>` snapshot diffing | S |
+| **v1.0** | docs polish, release binaries on tagged versions, signed releases | S |
+
+### Deferred / non-goals (do not pursue)
+
+- Double-entry accounting (beancount/ledger path) — wrong audience
+- YNAB-style envelope budgeting — competes with the "log fast" wedge
+- Bank sync / Plaid — local-only is a feature
+- Web UI — premature; nail agent-CLI positioning first
+
+Effort key: **S** ≈ ½ day, **M** ≈ 1–2 days, **L** ≈ 3+ days.
 
 ---
 
