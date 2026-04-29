@@ -42,6 +42,8 @@ Usage:
   finance next-month               # next month income vs payments preview
   finance loans                    # active debts, sorted by principal desc
   finance recurring                # recurring income, expense, and periodic items
+  finance recurring sync [--month YYYY-MM] [--dry-run]
+                                   # auto-create transactions from recurring schedules
   finance categories               # category list
   finance show <id>                # fetch a single record by id
   finance loan add                 # interactive prompt flow
@@ -79,7 +81,7 @@ const BOOLEAN_FLAGS: Record<string, string[]> = {
   "next-month": COMMON_BOOLEANS,
   loan: MUTATION_BOOLEANS,
   loans: COMMON_BOOLEANS,
-  recurring: COMMON_BOOLEANS,
+  recurring: MUTATION_BOOLEANS,
   categories: COMMON_BOOLEANS,
   show: COMMON_BOOLEANS,
   edit: MUTATION_BOOLEANS,

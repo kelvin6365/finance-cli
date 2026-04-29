@@ -214,6 +214,17 @@ const COMMANDS: CommandSpec[] = [
     mutates: false,
   },
   {
+    name: "recurring sync",
+    description:
+      "Auto-create transactions for recurring income/expense whose dayOfMonth has already passed in the target month, skipping any already synced (idempotent)",
+    positional: [],
+    flags: [
+      ...MUTATION_FLAGS,
+      { name: "month", type: "string", description: "Target YYYY-MM (defaults to current month)" },
+    ],
+    mutates: true,
+  },
+  {
     name: "categories",
     description: "List all categories",
     positional: [],
