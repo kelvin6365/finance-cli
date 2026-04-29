@@ -161,9 +161,22 @@ const COMMANDS: CommandSpec[] = [
   },
   {
     name: "loans",
-    description: "Active debts sorted by principal desc",
+    description:
+      "Active debts sorted by principal desc; JSON includes per-loan amortization (next-payment split, total remaining interest)",
     positional: [],
     flags: [...COMMON_FLAGS],
+    mutates: false,
+  },
+  {
+    name: "simulate",
+    description:
+      "Debt-payoff simulator. Compares baseline vs strategy (avalanche prioritises highest APR; snowball prioritises smallest principal) with optional extra/month",
+    positional: [],
+    flags: [
+      ...COMMON_FLAGS,
+      { name: "extra", type: "number", description: "Extra payment per month (integer)" },
+      { name: "strategy", type: "string", description: "avalanche | snowball (default avalanche)" },
+    ],
     mutates: false,
   },
   {

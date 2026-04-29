@@ -22,6 +22,7 @@ import { runRecurring } from "./recurring.ts";
 import { runRunway } from "./runway.ts";
 import { runSchema } from "./schema.ts";
 import { runShow } from "./show.ts";
+import { runSimulate } from "./simulate.ts";
 import { runStatus } from "./status.ts";
 
 const HELP = `finance — personal finance tracker
@@ -52,6 +53,8 @@ Usage:
                                    # optional: --rate %, --start YYYY-MM, --end YYYY-MM, --note
   finance loan edit <id> [--name] [--payment N] [--principal N] [--rate %] [--end YYYY-MM] [--note]
   finance loan pay <id>            # decrement principal by monthlyPayment + log transaction
+  finance simulate [--extra N --strategy avalanche|snowball]
+                                   # debt-payoff simulator: months + interest saved vs baseline
   finance schema                   # self-describe command surface (for LLMs / scripts)
   finance --help
 
@@ -89,6 +92,7 @@ const BOOLEAN_FLAGS: Record<string, string[]> = {
   schema: COMMON_BOOLEANS,
   afford: COMMON_BOOLEANS,
   runway: COMMON_BOOLEANS,
+  simulate: COMMON_BOOLEANS,
 };
 
 const dispatch = async (): Promise<number> => {
@@ -132,6 +136,8 @@ const dispatch = async (): Promise<number> => {
       return runAfford(parsed);
     case "runway":
       return runRunway(parsed);
+    case "simulate":
+      return runSimulate(parsed);
     case "income": {
       const sub = parsed.positional[0];
       if (sub === "edit") return runIncomeEdit(parsed);
