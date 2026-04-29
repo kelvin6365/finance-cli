@@ -1,0 +1,54 @@
+# dependencies (bun install)
+node_modules/
+
+# build outputs
+dist/
+build/
+out/
+*.tgz
+
+# code coverage
+coverage/
+*.lcov
+
+# logs
+logs/
+*.log
+
+# temp files
+*.tmp
+
+# dotenv environment variable files
+.env
+.env.development.local
+.env.test.local
+.env.production.local
+.env.local
+
+# caches
+.eslintcache
+.cache
+*.tsbuildinfo
+
+# IntelliJ based IDEs
+.idea/
+
+# Claude Code local config (per-user permissions, not project state)
+.claude/
+
+# Personal financial data — never commit these.
+# The tracked seed (data/seed.json) must stay generic / fictional;
+# real-life data goes in any of these gitignored paths instead.
+data/seed.local.json
+data/seed.real.json
+data/personal/
+data/personal*.json
+*.private.md
+*.private.json
+*financial summary*.md
+*financial-summary*.md
+
+# Finder (MacOS) folder config
+.DS_Store
+
+docs/

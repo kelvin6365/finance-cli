@@ -1,0 +1,169 @@
+{
+  "_meta": {
+    "version": "1.0",
+    "currency": "USD",
+    "description": "Sample seed for a fictional persona getting out of debt. Replace with your own data via 'finance init', then use 'finance add' / 'finance loan add' to log real entries."
+  },
+  "settings": {
+    "currency": "USD",
+    "monthlySavingsTarget": 3000,
+    "freelanceMonthlyTarget": 6000,
+    "livingExpenseTarget": 22000,
+    "currentReserve": 5000,
+    "may2026InsuranceTarget": 8400,
+    "may2026Deadline": "2027-05-15",
+    "weekStartsOn": 1,
+    "currencySymbol": "$"
+  },
+  "categories": [
+    {
+      "id": "cat-salary",
+      "type": "income",
+      "name": "Salary",
+      "color": "#2D5A3D"
+    },
+    {
+      "id": "cat-freelance",
+      "type": "income",
+      "name": "Freelance",
+      "color": "#1F5F8B"
+    },
+    {
+      "id": "cat-other-in",
+      "type": "income",
+      "name": "Other Income",
+      "color": "#6B7280"
+    },
+    {
+      "id": "cat-debt",
+      "type": "expense",
+      "name": "Debt",
+      "color": "#8B2E1F"
+    },
+    {
+      "id": "cat-insurance",
+      "type": "expense",
+      "name": "Insurance",
+      "color": "#7C2D8B"
+    },
+    {
+      "id": "cat-living",
+      "type": "expense",
+      "name": "Living",
+      "color": "#B8722C"
+    },
+    {
+      "id": "cat-food",
+      "type": "expense",
+      "name": "Food",
+      "color": "#C44D2E"
+    },
+    {
+      "id": "cat-transport",
+      "type": "expense",
+      "name": "Transport",
+      "color": "#5B7C99"
+    },
+    {
+      "id": "cat-shopping",
+      "type": "expense",
+      "name": "Shopping",
+      "color": "#9C5D4B"
+    },
+    {
+      "id": "cat-utility",
+      "type": "expense",
+      "name": "Utilities",
+      "color": "#4F7080"
+    },
+    {
+      "id": "cat-other-out",
+      "type": "expense",
+      "name": "Other",
+      "color": "#6B7280"
+    }
+  ],
+  "recurringIncome": [
+    {
+      "id": "rec-inc-salary",
+      "name": "Salary",
+      "amount": 38000,
+      "categoryId": "cat-salary",
+      "dayOfMonth": null,
+      "active": true,
+      "note": "Monthly net after MPF"
+    }
+  ],
+  "recurringExpense": [
+    {
+      "id": "rec-exp-rent",
+      "name": "Rent",
+      "amount": 13000,
+      "categoryId": "cat-living",
+      "dayOfMonth": 1,
+      "active": true,
+      "note": ""
+    },
+    {
+      "id": "rec-exp-utilities",
+      "name": "Utilities",
+      "amount": 1200,
+      "categoryId": "cat-utility",
+      "dayOfMonth": 15,
+      "active": true,
+      "note": "Electricity + internet"
+    }
+  ],
+  "debts": [
+    {
+      "id": "debt-consolidation",
+      "name": "Consolidation loan",
+      "principalRemaining": 150000,
+      "annualRate": 6.5,
+      "monthlyPayment": 4200,
+      "startDate": "2025-10",
+      "endDate": "2028-09",
+      "categoryId": "cat-debt",
+      "active": true,
+      "note": "36-month flat-rate consolidation"
+    },
+    {
+      "id": "debt-car",
+      "name": "Car loan",
+      "principalRemaining": 32000,
+      "annualRate": 5.5,
+      "monthlyPayment": 1400,
+      "startDate": "2025-09",
+      "endDate": "2027-08",
+      "categoryId": "cat-debt",
+      "active": true,
+      "note": "24-month auto loan"
+    },
+    {
+      "id": "debt-family",
+      "name": "Family loan",
+      "principalRemaining": 50000,
+      "annualRate": 0,
+      "monthlyPayment": 1200,
+      "startDate": "2026-01",
+      "endDate": "2029-07",
+      "categoryId": "cat-debt",
+      "active": true,
+      "note": "Interest-free, flexible terms"
+    }
+  ],
+  "periodicItems": [
+    {
+      "id": "per-life-insurance",
+      "name": "Annual life insurance",
+      "amount": 8400,
+      "type": "expense",
+      "categoryId": "cat-insurance",
+      "month": 5,
+      "recurring": "annual",
+      "active": true,
+      "note": "Premium due each May"
+    }
+  ],
+  "transactions": []
+}

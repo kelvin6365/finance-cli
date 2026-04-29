@@ -1,0 +1,9 @@
+node_modules/
+dist/
+build/
+.git/
+*.log
+*.tmp
+coverage/
+.DS_Store
+bun.lock
