@@ -19,6 +19,7 @@ import { runLoans } from "./loans.ts";
 import { runNextMonth } from "./next-month.ts";
 import { errJson, isJson } from "./output.ts";
 import { runRecurring } from "./recurring.ts";
+import { runRunway } from "./runway.ts";
 import { runSchema } from "./schema.ts";
 import { runShow } from "./show.ts";
 import { runStatus } from "./status.ts";
@@ -34,6 +35,7 @@ Usage:
   finance delete <id> [--yes]      # remove a transaction (returns prior state in --json)
   finance balance [--raw]
   finance afford <amount> [--by YYYY-MM-DD]   # can I cover X by date Y? yes/tight/no
+  finance runway [--through YYYY-MM-DD]       # freelance vs target + cashflow projection
   finance income                   # current month income vs target
   finance income edit <id> [--name] [--amount N] [--note]
   finance list [--month [YYYY-MM]] [-n N] [--type income|expense] [--category <name>]
@@ -84,6 +86,7 @@ const BOOLEAN_FLAGS: Record<string, string[]> = {
   delete: ["yes", ...MUTATION_BOOLEANS],
   schema: COMMON_BOOLEANS,
   afford: COMMON_BOOLEANS,
+  runway: COMMON_BOOLEANS,
 };
 
 const dispatch = async (): Promise<number> => {
@@ -125,6 +128,8 @@ const dispatch = async (): Promise<number> => {
       return runBalance(parsed);
     case "afford":
       return runAfford(parsed);
+    case "runway":
+      return runRunway(parsed);
     case "income": {
       const sub = parsed.positional[0];
       if (sub === "edit") return runIncomeEdit(parsed);

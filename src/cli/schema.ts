@@ -125,6 +125,17 @@ const COMMANDS: CommandSpec[] = [
     mutates: false,
   },
   {
+    name: "runway",
+    description:
+      "Freelance vs target + cashflow projection. Tells you whether to push, coast, or catch up",
+    positional: [],
+    flags: [
+      ...COMMON_FLAGS,
+      { name: "through", type: "string", description: "ISO YYYY-MM-DD; defaults to end of current month" },
+    ],
+    mutates: false,
+  },
+  {
     name: "balance",
     description: "Current month balance, one line",
     positional: [],
