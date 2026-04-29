@@ -25,7 +25,7 @@ const HELP = `finance — personal finance tracker
 Usage:
   finance                          # status (default)
   finance status
-  finance init                     # create ~/.finance/data.json from seed
+  finance init [--currency USD --symbol $]   # create ~/.finance/data.json from seed
   finance add <amount> <category> [note] [--income] [--date YYYY-MM-DD]
   finance add                      # interactive mode
   finance edit <id> [--amount N] [--category <name>] [--note <text>] [--date YYYY-MM-DD]

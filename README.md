@@ -1,5 +1,9 @@
 # finance
 
+[![CI](https://github.com/kelvin6365/finance-cli/actions/workflows/ci.yml/badge.svg)](https://github.com/kelvin6365/finance-cli/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Bun](https://img.shields.io/badge/Bun-%E2%89%A51.2-black)](https://bun.sh)
+
 A terminal finance tracker for people getting out of debt.
 Local. Offline. Single binary. AI-agent friendly (`--json` on every command).
 
@@ -51,9 +55,10 @@ bun run build:macos-arm   # or build:macos-x64 / build:linux / build:windows
 ## First run
 
 ```bash
-finance init     # creates ~/.finance/data.json from a seed persona
-finance          # opens the TUI on a TTY (5 tabs: Dashboard / Add / Recent / Debts / Next Month)
-finance --help   # full command list
+finance init                                 # creates ~/.finance/data.json (USD by default)
+finance init --currency HKD --symbol HK$     # other currency at setup
+finance                                      # opens the TUI on a TTY (5 tabs)
+finance --help                               # full command list
 ```
 
 Tab keys in the TUI: `1`–`5` switch, `Esc` returns to Dashboard, `q` quits.
