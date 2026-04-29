@@ -27,9 +27,16 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
+          # Curated notes (RELEASE_NOTES.md) take precedence; if absent,
+          # fall back to auto-generated notes from commits / PRs.
+          if [ -f RELEASE_NOTES.md ]; then
+            NOTES_ARG="--notes-file RELEASE_NOTES.md"
+          else
+            NOTES_ARG="--generate-notes"
+          fi
           gh release create "${GITHUB_REF_NAME}" \
             --title "finance ${GITHUB_REF_NAME}" \
-            --generate-notes \
+            $NOTES_ARG \
             dist/finance-macos-arm64 \
             dist/finance-macos-x64 \
             dist/finance-linux-x64 \
