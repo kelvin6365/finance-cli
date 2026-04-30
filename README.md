@@ -153,14 +153,14 @@ finance loan pay <id> --dry-run --json          # preview without writing
 
 Exit codes: `0` success · `1` validation/lookup error · `2` system error.
 
-## Use it with Claude
+## Use it with AI agents
 
-There's an official Claude skill at
+There's an official skill at
 [kelvin6365/finance-cli-skill](https://github.com/kelvin6365/finance-cli-skill)
-that teaches Claude to drive every command above — translate intents
-like *"can I afford 5000 by may 31?"* or *"should I push freelance?"*
-into the right invocation, dry-run before destructive operations, and
-use `--idempotency-key` on retry-prone mutations.
+that teaches your agent to drive every command above — translate
+intents like *"can I afford 5000 by may 31?"* or *"should I push
+freelance?"* into the right invocation, dry-run before destructive
+operations, and use `--idempotency-key` on retry-prone mutations.
 
 Install via [skills.sh](https://skills.sh/docs):
 
@@ -168,8 +168,16 @@ Install via [skills.sh](https://skills.sh/docs):
 npx skills add kelvin6365/finance-cli-skill
 ```
 
-The skill will guide first-time users through CLI install + `finance
-init` automatically.
+Works with **50+ agents** that support the SKILL.md format —
+Claude Code, OpenCode, Codex, Cursor, Cline, Continue, GitHub Copilot,
+Windsurf, OpenHands, Goose, Gemini CLI, Aider, and others (see [the
+full list](https://github.com/vercel-labs/skills)). For agents not yet
+covered by the auto-installer (Hermes Agent, OpenClaw, custom setups),
+clone the repo into your agent's skills directory.
+
+The skill also guides first-time users through CLI install + `finance
+init` automatically — so a user who arrives via their agent before
+installing the binary still gets onboarded cleanly.
 
 ## Machine-readable mode
 
