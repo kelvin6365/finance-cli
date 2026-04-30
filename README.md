@@ -153,6 +153,24 @@ finance loan pay <id> --dry-run --json          # preview without writing
 
 Exit codes: `0` success · `1` validation/lookup error · `2` system error.
 
+## Use it with Claude
+
+There's an official Claude skill at
+[kelvin6365/finance-cli-skill](https://github.com/kelvin6365/finance-cli-skill)
+that teaches Claude to drive every command above — translate intents
+like *"can I afford 5000 by may 31?"* or *"should I push freelance?"*
+into the right invocation, dry-run before destructive operations, and
+use `--idempotency-key` on retry-prone mutations.
+
+Install via [skills.sh](https://skills.sh/docs):
+
+```bash
+npx skills add kelvin6365/finance-cli-skill
+```
+
+The skill will guide first-time users through CLI install + `finance
+init` automatically.
+
 ## Machine-readable mode
 
 Every command supports `--json` for scripts and AI agents:
